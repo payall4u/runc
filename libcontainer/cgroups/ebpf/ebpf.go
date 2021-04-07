@@ -32,11 +32,11 @@ func LoadAttachCgroupDeviceFilter(insts asm.Instructions, license string, dirFD 
 	if err != nil {
 		return nilCloser, err
 	}
-	if err := prog.Attach(dirFD, ebpf.AttachCGroupDevice, unix.BPF_F_ALLOW_MULTI); err != nil {
+	if err := prog.Attach(dirFD, ebpf.AttachCGroupDevice, unix.BPF_F_ALLOW_OVERRIDE); err != nil {
 		return nilCloser, errors.Wrap(err, "failed to call BPF_PROG_ATTACH (BPF_CGROUP_DEVICE, BPF_F_ALLOW_MULTI)")
 	}
 	closer := func() error {
-		if err := prog.Detach(dirFD, ebpf.AttachCGroupDevice, unix.BPF_F_ALLOW_MULTI); err != nil {
+		if err := prog.Detach(dirFD, ebpf.AttachCGroupDevice, unix.BPF_F_ALLOW_OVERRIDE); err != nil {
 			return errors.Wrap(err, "failed to call BPF_PROG_DETACH (BPF_CGROUP_DEVICE, BPF_F_ALLOW_MULTI)")
 		}
 		return nil
